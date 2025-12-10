@@ -1,12 +1,10 @@
 FROM node:lts-buster
 
-RUN apt-get update && \
-  apt-get install -y \
-  ffmpeg \
-  imagemagick \
-  webp && \
-  apt-get upgrade -y && \
-  rm -rf /var/lib/apt/lists/*
+# Paso 1: Asegura que el índice de paquetes esté actualizado
+RUN apt-get update
+
+# Paso 2: Instala las herramientas clave
+RUN apt-get install -y ffmpeg imagemagick webp
 
 COPY package.json .
 
