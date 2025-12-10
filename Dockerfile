@@ -1,13 +1,12 @@
-FROM node:lts-buster
+FROM node:18-alpine
 
-# Limpia la caché y configura una conexión más confiable
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# El gestor de paquetes de Alpine es APK. 
+# Esto limpia la caché de APK y actualiza el índice de paquetes en un solo comando.
+RUN apk update && apk add --no-cache bash
 
-# Intenta la actualización de la lista de paquetes
-RUN apt-get update
-
-# Paso 2: Instala las herramientas clave
-RUN apt-get install -y ffmpeg imagemagick webp
+# Instala las herramientas clave (ffmpeg, imagemagick, etc.)
+# Usamos el comando 'apk' para instalar las dependencias binarias
+RUN apk add --no-cache ffmpeg imagemagick webp
 
 COPY package.json .
 
