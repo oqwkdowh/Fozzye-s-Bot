@@ -1,8 +1,13 @@
+
 FROM node:18-alpine
 
-# El gestor de paquetes de Alpine es APK. 
-# Esto limpia la caché de APK y actualiza el índice de paquetes en un solo comando.
-RUN apk update && apk add --no-cache bash
+# Instala paquetes fundamentales para que funcione 'bash' y las herramientas de compilación
+RUN apk update && apk add --no-cache bash build-base
+
+# Instala las herramientas clave para el bot (ffmpeg, imagemaick, etc.)
+RUN apk add --no-cache ffmpeg imagemagick webp
+
+# ... El resto del archivo se mantiene igual ...
 
 # Instala las herramientas clave (ffmpeg, imagemagick, etc.)
 # Usamos el comando 'apk' para instalar las dependencias binarias
