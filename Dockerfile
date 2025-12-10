@@ -1,32 +1,35 @@
+# Usa una imagen base de Node.js moderna sobre Debian Bullseye (estable y compatible)
+FROM node:18-bullseye-slim
 
-FROM node:18-alpine
-
-# Instala paquetes fundamentales para que funcione 'bash' y las herramientas de compilación
-RUN apk update && apk add --no-cache bash build-base
-
-# Instala herramientas de desarrollo, librerías y dependencias binarias esenciales
-RUN apk add --no-cache \
-    bash \
-    build-base \
-    git \
-    python3 \
+# 1. ACTUALIZAR E INSTALAR DEPENDENCIAS DE SISTEMA (Linux)
+# Instalamos ffmpeg, imagemagick y las librerías necesarias con apt-get
+RUN apt-get update && \
+    apt-get install -y \
     ffmpeg \
     imagemagick \
     webp \
-    libwebp-dev
+    libwebp-dev \
+    git \
+    python3 \
+    build-essential \
+    && apt-get clean
 
-# ... El resto del archivo se mantiene igual ...
+# 2. COPIAR E INSTALAR DEPENDENCIAS DE NODE.JS
+# Crea el directorio de trabajo
+WORKDIR /app
 
-# Instala las herramientas clave (ffmpeg, imagemagick, etc.)
-# Usamos el comando 'apk' para instalar las dependencias binarias
-RUN apk add --no-cache ffmpeg imagemagick webp
-
+# Copia los archivos de configuración
 COPY package.json .
 
-RUN npm install && npm install qrcode-terminal
+# Instala las dependencias de Node.js (librerías del bot)
+RUN npm install
 
+# 3. COPIAR EL CÓDIGO RESTANTE
 COPY . .
 
+# 4. PUERTO Y COMANDO DE INICIO
+# El bot escucha por el puerto 5000 (o 8080 en algunos casos, pero 5000 es común)
 EXPOSE 5000
 
+# Comando para ejecutar el bot
 CMD ["node", "index.js"]
