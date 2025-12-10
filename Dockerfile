@@ -4,8 +4,16 @@ FROM node:18-alpine
 # Instala paquetes fundamentales para que funcione 'bash' y las herramientas de compilación
 RUN apk update && apk add --no-cache bash build-base
 
-# Instala las herramientas clave para el bot (ffmpeg, imagemaick, etc.)
-RUN apk add --no-cache ffmpeg imagemagick webp
+# Instala herramientas de desarrollo, librerías y dependencias binarias esenciales
+RUN apk add --no-cache \
+    bash \
+    build-base \
+    git \
+    python3 \
+    ffmpeg \
+    imagemagick \
+    webp \
+    libwebp-dev
 
 # ... El resto del archivo se mantiene igual ...
 
