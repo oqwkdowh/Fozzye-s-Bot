@@ -1,6 +1,9 @@
 FROM node:lts-buster
 
-# Paso 1: Asegura que el índice de paquetes esté actualizado
+# Limpia la caché y configura una conexión más confiable
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Intenta la actualización de la lista de paquetes
 RUN apt-get update
 
 # Paso 2: Instala las herramientas clave
